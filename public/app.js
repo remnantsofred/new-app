@@ -105,3 +105,49 @@ auth.onAuthStateChanged(user => {
         userDetails.innerHTML = '';
     }
 });
+
+const createMilestone = document.getElementById('createMilestone');
+const milestonesList = document.getElementById('milestonesList');
+
+const db = firebase.firestore();
+let milestonesRef;
+let unsubscribe;
+
+auth.onAuthStateChanged(user => {
+
+    if (user) {
+
+        // Database Reference
+        milestonesRef = db.collection('milestones')
+
+        createMilestone.onclick = () => {
+
+            const { serverTimestamp } = firebase.firestore.FieldValue;
+
+            milestonesRef.add({
+                // user: '/users/P1rx5MbLMY6fPGWbD9g5',
+                uid: user.uid,
+                name: faker.commerce.productName(),
+                createdAt: serverTimestamp(),
+                date: "1707936000000"
+            });
+        }
+        unsubscribe = milestonesRef.where('uid', '==', user.uid)
+            .onSnapshot(querySnapshot => {
+                
+                // Map results to an array of li elements
+
+                const items = querySnapshot.docs.map(doc => {
+
+                    return `<li>${doc.data().name}</li>`
+
+                });
+
+                milestonesList.innerHTML = items.join('');
+
+            });
+    } else {
+      // Unsubscribe when the user signs out
+      unsubscribe && unsubscribe();
+  }
+});
