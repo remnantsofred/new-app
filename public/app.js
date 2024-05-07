@@ -54,15 +54,15 @@ auth.onAuthStateChanged(user => {
                 date: "1707936000000"
             });
         }
-        // unsubscribe = milestonesRef.where('uid', '==', user.uid)
-        unsubscribe = milestonesRef
+        unsubscribe = milestonesRef.where('uid', '==', user.uid)
+        // unsubscribe = milestonesRef
             .onSnapshot(querySnapshot => {
                 
                 // Map results to an array of li elements
 
                 const items = querySnapshot.docs.map(doc => {
 
-                    return `<li>${doc.data().name}</li>`
+                    return `<li>${doc.data().date} </li>`
 
                 });
 
