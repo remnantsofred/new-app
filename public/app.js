@@ -49,20 +49,20 @@ auth.onAuthStateChanged(user => {
             milestonesRef.add({
                 // user: '/users/P1rx5MbLMY6fPGWbD9g5',
                 uid: user.uid,
-                name: faker.commerce.productName(),
+                name: 'new milestone from create button',
                 createdAt: serverTimestamp(),
-                date: "1707936000000"
+                date: "hi kenny"
             });
         }
-        // unsubscribe = milestonesRef.where('uid', '==', user.uid)
-        unsubscribe = milestonesRef
+        unsubscribe = milestonesRef.where('uid', '==', user.uid)
+        // unsubscribe = milestonesRef
             .onSnapshot(querySnapshot => {
                 
                 // Map results to an array of li elements
 
                 const items = querySnapshot.docs.map(doc => {
 
-                    return `<li>${doc.data().name}</li>`
+                    return `<li>${new Date((doc.data().date))} - ${doc.data().name} </li>`
 
                 });
 
